@@ -216,6 +216,75 @@ paths:
           description: Position not found
         '500':
           description: Internal server error
+  /position/{id}/interviewflow:
+    get:
+      summary: Get interview flow for a position
+      description: >
+        Retrieves the interview flow configuration for a specific position, including the position name, flow description, and the ordered steps of the interview process.
+        - `positionName`: Name of the position.
+        - `interviewFlow`: Object containing the interview flow details.
+          - `id`: Interview flow identifier.
+          - `description`: Description of the interview process.
+          - `interviewSteps`: Array of steps, each with:
+            - `id`: Step identifier.
+            - `interviewFlowId`: Associated interview flow ID.
+            - `interviewTypeId`: Type of interview (e.g., screening, technical, manager).
+            - `name`: Name of the interview step.
+            - `orderIndex`: Order of the step in the process.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Position identifier
+      responses:
+        '200':
+          description: Interview flow retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  interviewFlow:
+                    type: object
+                    properties:
+                      positionName:
+                        type: string
+                        example: Senior Full-Stack Engineer
+                      interviewFlow:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          description:
+                            type: string
+                            example: Standard development interview process
+                          interviewSteps:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                  example: 1
+                                interviewFlowId:
+                                  type: integer
+                                  example: 1
+                                interviewTypeId:
+                                  type: integer
+                                  example: 1
+                                name:
+                                  type: string
+                                  example: Initial Screening
+                                orderIndex:
+                                  type: integer
+                                  example: 1
+        '404':
+          description: Position not found
+        '500':
+          description: Internal server error
   /candidates/{id}:
     put:
       summary: Update candidate stage
